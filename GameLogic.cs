@@ -32,6 +32,8 @@ public static class GameLogic
         foreach (Pole paul in Paules) {
             if (paul.CheckCollision(Player)) GameOver = true;
         }
+
+        if (Player.Position.Y - (Player.Height / 2) > Height) GameOver = true;
     }
 
     public static async void PlayBirdAnimation() 

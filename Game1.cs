@@ -54,7 +54,7 @@ public class Game1 : Game
 
     protected override void LoadContent()
     {
-
+        
     }
 
     protected override void Update(GameTime gameTime)
