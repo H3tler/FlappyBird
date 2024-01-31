@@ -34,12 +34,13 @@ public class Pole
         }
     }
 
-    public Pole(int width, int height, Vector2 Position, Texture2D Texture) 
+    public Pole(Texture2D Texture) 
     {
         Random ran = new Random();
+        int width = polewidth;
         
-        int height1 = ran.Next(100, MaxHeight - 200);
-        int height2 = ran.Next(100, Height - (MaxHeight - 200));
+        int height1 = ran.Next(100, MaxHeight - 100);
+        int height2 = ran.Next(100, MaxHeight - height1);
 
         Paul PoleU = new(width, height1, new Vector2(Width + (width / 2), height1 / 2));
         Paul PoleD = new(width, height2, new Vector2(Width + (width / 2), Height - (height2 / 2)));
@@ -78,10 +79,19 @@ public class Pole
         
     }
 
-    public bool OffScreen() 
+    public bool OffPos(float x) 
     {
         foreach (Paul pole in poles) {
-            if (pole.Position.X + (pole.Width / 2) < 0) return true;
+            if (pole.Position.X + (pole.Width / 2) < x) return true;
+        }
+
+        return false;
+    }
+
+    public bool InPos(float x) 
+    {
+        foreach (Paul pole in poles) {
+            if (pole.Position.X == x) return true;
         }
 
         return false;

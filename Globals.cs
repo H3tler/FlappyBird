@@ -12,7 +12,7 @@ public static class Globals // Class for global methods and variables.
     public static Bird Player;
     public static List<Pole> Paules = new();
     public static bool GameOver = false;
-    public static int polewidth = 300;
+    public static int polewidth = 100;
     public static Texture2D pixel1;
     public static Texture2D pixel2;
 }
