@@ -6,6 +6,7 @@
 /FlappyBird.sln
 .vs/
 .vscode/
+Assets/
 
 # dotenv files
 .env
