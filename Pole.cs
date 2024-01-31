@@ -4,8 +4,8 @@ namespace FlappyBird;
 
 public class Pole
 {
-    private int Height;
-    private int Width;
+    public int Height {get; private set;}
+    public int Width {get; private set;}
     private Texture2D Texture;
     public Vector2 Position {get; private set;}
     public float Xmin {
@@ -20,6 +20,8 @@ public class Pole
     public float Ymax {
         get {return Position.Y + (Height / 2);}
     }
+
+    
 
     public Pole(int Width, int Height, Vector2 Position, Texture2D Texture) 
     {

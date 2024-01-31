@@ -2,11 +2,10 @@ namespace FlappyBird;
 
 public class Bird
 {
-    public Vector2 Speed;
     private Texture2D Texture;
     public Vector2 Position {get; private set;}
-    private int Width;
-    private int Height;
+    public int Height {get; private set;}
+    public int Width {get; private set;}
     public bool Dead;
     public float Xmin {
         get {return Position.X - (Width / 2);}

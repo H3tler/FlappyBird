@@ -2,6 +2,7 @@ global using static FlappyBird.Globals;
 global using Microsoft.Xna.Framework;
 global using Microsoft.Xna.Framework.Graphics;
 global using Microsoft.Xna.Framework.Input;
+using static FlappyBird.GameLogic;
 
 namespace FlappyBird;
 
@@ -9,9 +10,6 @@ public class Game1 : Game
 {
     private GraphicsDeviceManager graphics;
     private SpriteBatch spriteBatch;
-    Bird player;
-    Texture2D pixel1;
-    Texture2D pixel2;
     Pole paul;
     bool keypressed = false;
 
@@ -38,8 +36,11 @@ public class Game1 : Game
         pixel2 = new (GraphicsDevice, 1, 1);
         pixel2.SetData(new Color[] {Color.Green});
 
-        player = new (new Vector2(Width / 2, Height / 2), 100, 100, pixel1);
-        paul = new(200, 400, new Vector2(600, 300), pixel2);
+        Player = new (new Vector2(Width / 2, Height / 2), 100, 100, pixel1);
+        int paulheight = 200;
+        paul = new(200, paulheight, new Vector2(800, paulheight / 2), pixel2);
+        GameSpeed = -2;
+        MaxHeight = Height - (Player.Height + 5);
 //----------------------------------------------------------
 
         base.Initialize();
@@ -63,10 +64,15 @@ public class Game1 : Game
         }
         if (ks.IsKeyUp(Keys.Space) && keypressed == true) {
             keypressed = false;
-            player.Move(new Vector2(0, -50));
+            gravity = -2.5f;
         }
 
-        player.Move(new Vector2(0, 2));
+        gravity += 0.1f;
+
+        Player.Move(new Vector2(0, gravity));
+        paul.Move(new Vector2(GameSpeed, 0));
+        if (paul.Position.X + (paul.Width / 2) < 0) paul.Move(new Vector2(Width - (paul.Width / 2), 0));
+        if (paul.CheckCollision(Player)) GameSpeed = 0;
 //----------------------------------------------------------
 
         base.Update(gameTime);
@@ -79,7 +85,7 @@ public class Game1 : Game
         spriteBatch.Begin();
 //----------------------------------------------------------
         paul.Draw(spriteBatch); 
-        player.Draw(spriteBatch);       
+        Player.Draw(spriteBatch);       
 //----------------------------------------------------------
         spriteBatch.End();
 
