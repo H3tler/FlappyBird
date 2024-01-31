@@ -1,59 +1,97 @@
 using System.Collections.Generic;
+using System;
 
 namespace FlappyBird;
 
 public class Pole
 {
-    public int Height {get; private set;}
-    public int Width {get; private set;}
     private Texture2D Texture;
-    public Vector2 Position {get; private set;}
-    public float Xmin {
-        get {return Position.X - (Width / 2);}
-    }
-    public float Xmax {
-        get {return Position.X + (Width / 2);}
-    }
-    public float Ymin {
-        get {return Position.Y - (Height / 2);}
-    }
-    public float Ymax {
-        get {return Position.Y + (Height / 2);}
-    }
+    Paul[] poles;
 
-    
-
-    public Pole(int Width, int Height, Vector2 Position, Texture2D Texture) 
+    internal class Paul
     {
-        this.Width = Width;
-        this.Height = Height;
-        this.Position = Position;
+        internal Vector2 Position;
+        internal int Height;
+        internal int Width;
+
+        internal Paul(int width, int height, Vector2 Pos) {
+            Width = width;
+            Height = height;
+            Position = Pos;
+        }
+
+        internal float Xmin {
+            get {return Position.X - (Width / 2);}
+        }
+        internal float Xmax {
+            get {return Position.X + (Width / 2);}
+        }
+        internal float Ymin {
+            get {return Position.Y - (Height / 2);}
+        }
+        internal float Ymax {
+            get {return Position.Y + (Height / 2);}
+        }
+    }
+
+    public Pole(int width, int height, Vector2 Position, Texture2D Texture) 
+    {
+        Random ran = new Random();
+        
+        int height1 = ran.Next(100, MaxHeight - 200);
+        int height2 = ran.Next(100, Height - (MaxHeight - 200));
+
+        Paul PoleU = new(width, height1, new Vector2(Width + (width / 2), height1 / 2));
+        Paul PoleD = new(width, height2, new Vector2(Width + (width / 2), Height - (height2 / 2)));
+        poles = new Paul[] {PoleU, PoleD}; 
+        
+
         this.Texture = Texture;
     }
 
     public bool CheckCollision(Bird Player)
     {
-        if (Player.Xmin > Xmax) 
-            return false;
-        if (Player.Xmax < Xmin) 
-            return false;
-        if (Player.Ymin > Ymax)
-            return false;
-        if (Player.Ymax < Ymin)
-            return false;
+        bool collide = false;
 
-        return true;
+        foreach (Paul pole in poles) {
+            if (Player.Xmin > pole.Xmax) 
+                continue;
+            if (Player.Xmax < pole.Xmin) 
+                continue;
+            if (Player.Ymin > pole.Ymax)
+                continue;
+            if (Player.Ymax < pole.Ymin)
+                continue;
+
+            collide = true;
+        }
+
+        return collide;
     } 
 
     public void Draw(SpriteBatch spriteBatch)
     {
-        spriteBatch.Draw(Texture, Position, new Rectangle {Width = Width, Height = Height}, Color.White, 0f,
-        new Vector2(Width / 2, Height / 2), Vector2.One, SpriteEffects.None, 0f);
+        foreach (Paul pole in poles) {
+            spriteBatch.Draw(Texture, pole.Position, new Rectangle {Width = pole.Width, Height = pole.Height}, Color.White, 0f,
+                new Vector2(pole.Width / 2, pole.Height / 2), Vector2.One, SpriteEffects.None, 0f);
+        }
+        
+    }
+
+    public bool OffScreen() 
+    {
+        foreach (Paul pole in poles) {
+            if (pole.Position.X + (pole.Width / 2) < 0) return true;
+        }
+
+        return false;
     }
 
     public void Move(Vector2 MovingVector) 
     {
-        Position = Vector2.Add(Position, MovingVector);
+        foreach (Paul pole in poles) {
+            pole.Position = Vector2.Add(pole.Position, MovingVector);
+        }   
     }
 
 }

@@ -35,12 +35,14 @@ public class Game1 : Game
         pixel1.SetData(new Color[] {Color.Blue});
         pixel2 = new (GraphicsDevice, 1, 1);
         pixel2.SetData(new Color[] {Color.Green});
-
         Player = new (new Vector2(Width / 2, Height / 2), 100, 100, pixel1);
+        MaxHeight = Height - (Player.Height + 5);
+
+        
         int paulheight = 200;
         paul = new(200, paulheight, new Vector2(800, paulheight / 2), pixel2);
         GameSpeed = -2;
-        MaxHeight = Height - (Player.Height + 5);
+        
 //----------------------------------------------------------
 
         base.Initialize();
@@ -71,7 +73,7 @@ public class Game1 : Game
 
         Player.Move(new Vector2(0, gravity));
         paul.Move(new Vector2(GameSpeed, 0));
-        if (paul.Position.X + (paul.Width / 2) < 0) paul.Move(new Vector2(Width - (paul.Width / 2), 0));
+        if (paul.OffScreen()) paul.Move(new Vector2(Width - 200, 0));
         if (paul.CheckCollision(Player)) GameSpeed = 0;
 //----------------------------------------------------------
 
