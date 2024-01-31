@@ -15,5 +15,10 @@ public static class Globals // Class for global methods and variables.
     public static int polewidth = 100;
     public static Texture2D pixel1;
     public static Texture2D pixel2;
+    public static Texture2D ground;
+    public static Texture2D pipeG;
+    public static Texture2D bbd;
+    public static Texture2D bbu;
+    public static Texture2D bbm;
 }
 

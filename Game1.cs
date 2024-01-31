@@ -35,9 +35,14 @@ public class Game1 : Game
         pixel1.SetData(new Color[] {Color.Blue});
         pixel2 = new (GraphicsDevice, 1, 1);
         pixel2.SetData(new Color[] {Color.Green});
-        Player = new (new Vector2(Width / 2, Height / 2), 30, 30, pixel1);
+        pipeG = Content.Load<Texture2D>("pipeG");
+        ground = Content.Load<Texture2D>("base");
+        bbm = Content.Load<Texture2D>("bbm");
+        bbu = Content.Load<Texture2D>("bbu");
+        bbd = Content.Load<Texture2D>("bbd");
+        Player = new (new Vector2(Width / 2, Height / 2), bbm.Width, bbm.Height, bbm);
         MaxHeight = Height - (Player.Height + 30);
-        paul = new(pixel2);
+        paul = new(pipeG);
         Paules.Add(paul);
 
         GameSpeed = -2;
@@ -66,6 +71,7 @@ public class Game1 : Game
         if (ks.IsKeyUp(Keys.Space) && keypressed == true) {
             keypressed = false;
             gravity = -2f;
+            PlayBirdAnimation();
         }
 
         gravity += 0.1f;
@@ -73,7 +79,7 @@ public class Game1 : Game
         Player.Move(new Vector2(0, gravity));
         
         if (!GameOver) ProgressGame();
-        //Collisions();
+        Collisions();
 //----------------------------------------------------------
 
         base.Update(gameTime);
@@ -85,10 +91,11 @@ public class Game1 : Game
 
         spriteBatch.Begin();
 //----------------------------------------------------------
+        spriteBatch.Draw(ground, new Rectangle(0, Height - 100, Width, 100), Color.White);
         foreach (Pole pp in Paules) {
             pp.Draw(spriteBatch);
         }
-        Player.Draw(spriteBatch);       
+        Player.Draw(spriteBatch, gravity);            
 //----------------------------------------------------------
         spriteBatch.End();
 

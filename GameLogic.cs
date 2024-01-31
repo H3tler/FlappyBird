@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace FlappyBird;
 
@@ -16,7 +17,7 @@ public static class GameLogic
                 continue;
             }
             if (paul.InPos(600)) {
-                var po = new Pole(pixel2);
+                var po = new Pole(pipeG);
                 polls.Add(po);           
             }
             paul.Move(new Vector2(GameSpeed, 0));
@@ -31,6 +32,17 @@ public static class GameLogic
         foreach (Pole paul in Paules) {
             if (paul.CheckCollision(Player)) GameOver = true;
         }
+    }
+
+    public static async void PlayBirdAnimation() 
+    {
+        Player.Texture = bbu;
+        await Task.Delay(50);
+        Player.Texture = bbm;
+        await Task.Delay(50);
+        Player.Texture = bbd;
+        await Task.Delay(50);
+        Player.Texture = bbm;
     }
 
 }

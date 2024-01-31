@@ -42,8 +42,8 @@ public class Pole
         int height1 = ran.Next(100, MaxHeight - 100);
         int height2 = ran.Next(100, MaxHeight - height1);
 
-        Paul PoleU = new(width, height1, new Vector2(Width + (width / 2), height1 / 2));
-        Paul PoleD = new(width, height2, new Vector2(Width + (width / 2), Height - (height2 / 2)));
+        Paul PoleU = new(Texture.Width, height1, new Vector2(Width + (width / 2), height1 / 2));
+        Paul PoleD = new(Texture.Width, height2, new Vector2(Width + (width / 2), Height - (height2 / 2)));
         poles = new Paul[] {PoleU, PoleD}; 
         
 
@@ -73,7 +73,8 @@ public class Pole
     public void Draw(SpriteBatch spriteBatch)
     {
         foreach (Paul pole in poles) {
-            spriteBatch.Draw(Texture, pole.Position, new Rectangle {Width = pole.Width, Height = pole.Height}, Color.White, 0f,
+            float rot = pole == poles[1] ? 0f : MathF.PI;
+            spriteBatch.Draw(Texture, pole.Position, new Rectangle {Width = pole.Width, Height = pole.Height}, Color.White, rot,
                 new Vector2(pole.Width / 2, pole.Height / 2), Vector2.One, SpriteEffects.None, 0f);
         }
         
