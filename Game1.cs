@@ -10,8 +10,6 @@ public class Game1 : Game
 {
     private GraphicsDeviceManager graphics;
     private SpriteBatch spriteBatch;
-    Pole paul;
-    bool keypressed = false;
 
     public Game1()
     {
@@ -31,7 +29,19 @@ public class Game1 : Game
         spriteBatch = new SpriteBatch(GraphicsDevice);
 
 //----------------------------------------------------------
-        rotationangle = 10;
+        
+        LoadTheContent();
+        StartGame();
+        
+//----------------------------------------------------------
+
+        base.Initialize();
+    }
+
+    protected override void LoadContent() {}
+
+    void LoadTheContent() 
+    {
         pixel1 = new (GraphicsDevice, 1, 1);
         pixel1.SetData(new Color[] {Color.Blue});
         pixel2 = new (GraphicsDevice, 1, 1);
@@ -41,53 +51,15 @@ public class Game1 : Game
         bbm = Content.Load<Texture2D>("bbm");
         bbu = Content.Load<Texture2D>("bbu");
         bbd = Content.Load<Texture2D>("bbd");
-        Player = new (new Vector2(Width / 2, Height / 2), bbm.Width, bbm.Height, bbm);
-        MaxHeight = Height - (Player.Height + 30);
-        paul = new(pipeG);
-        Paules.Add(paul);
-
-        GameSpeed = -2;
-        
-//----------------------------------------------------------
-
-        base.Initialize();
-    }
-
-    protected override void LoadContent()
-    {
-        
     }
 
     protected override void Update(GameTime gameTime)
     {
-        if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+        if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
             Exit();
 
 //----------------------------------------------------------
-        var ks = Keyboard.GetState();
-
-        if (ks.IsKeyDown(Keys.Space) && keypressed == false) {
-            keypressed = true;
-        }
-        if (ks.IsKeyUp(Keys.Space) && keypressed == true) {
-            keypressed = false;
-            if (! GameOver) {
-                gravity = -2f;
-                PlayBirdAnimation();
-            }                
-        }       
-
-        gravity += 0.1f;
-
-        Player.Move(new Vector2(0, gravity));
-
-        if (GameOver) {
-            rotationangle = 75;
-        } 
-        
-        if (! GameOver) ProgressGame();
-
-        Collisions();
+        UpdateGameState();
 //----------------------------------------------------------
 
         base.Update(gameTime);

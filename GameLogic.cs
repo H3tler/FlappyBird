@@ -7,6 +7,10 @@ namespace FlappyBird;
 public static class GameLogic
 {
 
+    static bool keypressed = false;
+    static float charge = -2f;
+    static float minspawnx = Width - pipeG.Width - 10;
+    static float spawnx = Width / 2;
 
     public static void ProgressGame()
     {
@@ -16,9 +20,10 @@ public static class GameLogic
             if (paul.OffPos(0)) {
                 continue;
             }
-            if (paul.InPos(600)) {
+            if (paul.InPos(spawnx)) {
                 var po = new Pole(pipeG);
-                polls.Add(po);           
+                polls.Add(po);      
+                if (spawnx < minspawnx) spawnx++;     
             }
             paul.Move(new Vector2(GameSpeed, 0));
             polls.Add(paul);
@@ -45,6 +50,51 @@ public static class GameLogic
         Player.Texture = bbd;
         await Task.Delay(50);
         Player.Texture = bbm;
+    }
+
+    public static void StartGame()
+    {
+        Paules = new();
+        rotationangle = 10;  
+        gravity = 0;                 
+        GameSpeed = -2;
+        Player = new (new Vector2(Width / 2, Height / 2), bbm.Width, bbm.Height, bbm);
+        MaxHeight = Height - (Player.Height + 30);
+        Paules.Add(new Pole(pipeG));
+        GameOver = false;
+    }
+
+    public static void UpdateGameState()
+    {
+        var ks = Keyboard.GetState();
+
+        if (ks.IsKeyDown(Keys.Space) && keypressed == false) {
+            keypressed = true;
+            if (charge > -3f) {
+                charge += -0.3f;
+            }
+        }
+        if (ks.IsKeyUp(Keys.Space) && keypressed == true) {
+            keypressed = false;
+            if (! GameOver) {
+                gravity = charge;
+                charge = -2f;
+                PlayBirdAnimation();
+            }                
+        }      
+        if (ks.IsKeyDown(Keys.Q)) StartGame(); 
+
+        gravity += 0.1f;
+
+        Player.Move(new Vector2(0, gravity));
+
+        if (GameOver) {
+            rotationangle = 75;
+        } 
+        
+        if (! GameOver) ProgressGame();
+
+        Collisions();
     }
 
 }

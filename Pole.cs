@@ -7,6 +7,7 @@ public class Pole
 {
     private Texture2D Texture;
     Paul[] poles;
+    bool birdin;
 
     internal class Paul
     {
@@ -46,7 +47,7 @@ public class Pole
         Paul PoleD = new(Texture.Width, height2, new Vector2(Width + (width / 2), Height - (height2 / 2)));
         poles = new Paul[] {PoleU, PoleD}; 
         
-
+        birdin = false;
         this.Texture = Texture;
     }
 
@@ -92,7 +93,10 @@ public class Pole
     public bool InPos(float x) 
     {
         foreach (Paul pole in poles) {
-            if (pole.Position.X == x) return true;
+            if (pole.Position.X < x && birdin == false) {
+                birdin = true;
+                return true;
+            }
         }
 
         return false;
