@@ -31,6 +31,7 @@ public class Game1 : Game
         spriteBatch = new SpriteBatch(GraphicsDevice);
 
 //----------------------------------------------------------
+        rotationangle = 10;
         pixel1 = new (GraphicsDevice, 1, 1);
         pixel1.SetData(new Color[] {Color.Blue});
         pixel2 = new (GraphicsDevice, 1, 1);
@@ -70,8 +71,13 @@ public class Game1 : Game
         }
         if (ks.IsKeyUp(Keys.Space) && keypressed == true) {
             keypressed = false;
-            gravity = -2f;
-            PlayBirdAnimation();
+            if (! GameOver) {
+                gravity = -2f;
+                PlayBirdAnimation();
+            }   
+            else {
+                rotationangle = 75;
+            }    
         }
 
         gravity += 0.1f;

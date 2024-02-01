@@ -31,7 +31,9 @@ public class Bird
 
     public void Draw(SpriteBatch spriteBatch, float dir)
     {
-        spriteBatch.Draw(Texture, Position, new Rectangle {Width = Width, Height = Height}, Color.White, 0f,
+        float angle = rotationangle * (MathF.PI / 180);
+        float rot = dir > 0 ?  angle : dir < 0 ? angle * -1: 0;
+        spriteBatch.Draw(Texture, Position, new Rectangle {Width = Width, Height = Height}, Color.White, rot,
         new Vector2(Width / 2, Height / 2), Vector2.One, SpriteEffects.None, 0f);
     }
 
