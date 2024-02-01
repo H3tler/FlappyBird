@@ -21,5 +21,6 @@ public static class Globals // Class for global methods and variables.
     public static Texture2D bbu;
     public static Texture2D bbm;
     public static float rotationangle;
+    public static SpriteFont Consolas;
 }
 

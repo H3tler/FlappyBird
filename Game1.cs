@@ -51,6 +51,7 @@ public class Game1 : Game
         bbm = Content.Load<Texture2D>("bbm");
         bbu = Content.Load<Texture2D>("bbu");
         bbd = Content.Load<Texture2D>("bbd");
+        Consolas = Content.Load<SpriteFont>("Consolas");
     }
 
     protected override void Update(GameTime gameTime)
@@ -75,7 +76,8 @@ public class Game1 : Game
         foreach (Pole pp in Paules) {
             pp.Draw(spriteBatch);
         }
-        Player.Draw(spriteBatch, gravity);            
+        Player.Draw(spriteBatch, gravity);      
+        //spriteBatch.DrawString(Consolas, charge.ToString(), new Vector2(300, 300), Color.Black);      
 //----------------------------------------------------------
         spriteBatch.End();
 

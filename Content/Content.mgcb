@@ -61,6 +61,13 @@
 /processorParam:TextureFormat=Color
 /build:bbu.png
 
+#begin Consolas.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Consolas.spritefont
+
 #begin pipeG.png
 /importer:TextureImporter
 /processor:TextureProcessor

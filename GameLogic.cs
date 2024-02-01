@@ -8,7 +8,7 @@ public static class GameLogic
 {
 
     static bool keypressed = false;
-    static float charge = -2f;
+    static float charge = -1.5f;
     static float minspawnx = Width - pipeG.Width - 10;
     static float spawnx = Width / 2;
 
@@ -23,7 +23,7 @@ public static class GameLogic
             if (paul.InPos(spawnx)) {
                 var po = new Pole(pipeG);
                 polls.Add(po);      
-                if (spawnx < minspawnx) spawnx++;     
+                if (spawnx < minspawnx) spawnx += 10f;     
             }
             paul.Move(new Vector2(GameSpeed, 0));
             polls.Add(paul);
@@ -66,23 +66,8 @@ public static class GameLogic
 
     public static void UpdateGameState()
     {
-        var ks = Keyboard.GetState();
-
-        if (ks.IsKeyDown(Keys.Space) && keypressed == false) {
-            keypressed = true;
-            if (charge > -3f) {
-                charge += -0.3f;
-            }
-        }
-        if (ks.IsKeyUp(Keys.Space) && keypressed == true) {
-            keypressed = false;
-            if (! GameOver) {
-                gravity = charge;
-                charge = -2f;
-                PlayBirdAnimation();
-            }                
-        }      
-        if (ks.IsKeyDown(Keys.Q)) StartGame(); 
+        
+        HandleKeys();
 
         gravity += 0.1f;
 
@@ -95,6 +80,30 @@ public static class GameLogic
         if (! GameOver) ProgressGame();
 
         Collisions();
+    }
+
+    public static void HandleKeys()
+    {
+        var ks = Keyboard.GetState();
+
+        if (ks.IsKeyDown(Keys.Space)) {
+            keypressed = true;
+            if (charge > -3f) {
+                charge += -0.1f;
+            }
+        }
+
+        if (ks.IsKeyUp(Keys.Space) && keypressed == true) {
+            keypressed = false;
+            if (! GameOver) {
+                gravity = charge;
+                charge = -1.5f;
+                PlayBirdAnimation();
+            }                
+        }    
+
+        if (ks.IsKeyDown(Keys.Q)) 
+            StartGame(); 
     }
 
 }
