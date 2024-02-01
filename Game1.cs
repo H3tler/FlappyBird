@@ -74,17 +74,19 @@ public class Game1 : Game
             if (! GameOver) {
                 gravity = -2f;
                 PlayBirdAnimation();
-            }   
-            else {
-                rotationangle = 75;
-            }    
-        }
+            }                
+        }       
 
         gravity += 0.1f;
 
         Player.Move(new Vector2(0, gravity));
+
+        if (GameOver) {
+            rotationangle = 75;
+        } 
         
-        if (!GameOver) ProgressGame();
+        if (! GameOver) ProgressGame();
+
         Collisions();
 //----------------------------------------------------------
 
