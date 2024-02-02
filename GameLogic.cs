@@ -7,10 +7,11 @@ namespace FlappyBird;
 public static class GameLogic
 {
 
-    static bool keypressed = false;
-    static float charge = -1.5f;
+    static bool keypressed;
+    static float charge;
     static float minspawnx = Width - pipeG.Width - 10;
     static float spawnx = Width / 2;
+    public static int score;
 
     public static void ProgressGame()
     {
@@ -25,6 +26,9 @@ public static class GameLogic
                 polls.Add(po);      
                 if (spawnx < minspawnx) spawnx += 10f;     
             }
+            if (paul.CheckPass(Player.Position.X - (Player.Width / 2)))
+                score++;
+
             paul.Move(new Vector2(GameSpeed, 0));
             polls.Add(paul);
         }
@@ -55,6 +59,7 @@ public static class GameLogic
     public static void StartGame()
     {
         Paules = new();
+        score = 10;
         rotationangle = 10;  
         gravity = 0;                 
         GameSpeed = -2;
@@ -62,6 +67,8 @@ public static class GameLogic
         MaxHeight = Height - (Player.Height + 30);
         Paules.Add(new Pole(pipeG));
         GameOver = false;
+        keypressed = false;
+        charge = -1.5f;
     }
 
     public static void UpdateGameState()

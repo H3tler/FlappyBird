@@ -3,6 +3,7 @@ global using Microsoft.Xna.Framework;
 global using Microsoft.Xna.Framework.Graphics;
 global using Microsoft.Xna.Framework.Input;
 using static FlappyBird.GameLogic;
+using System;
 
 namespace FlappyBird;
 
@@ -52,6 +53,17 @@ public class Game1 : Game
         bbu = Content.Load<Texture2D>("bbu");
         bbd = Content.Load<Texture2D>("bbd");
         Consolas = Content.Load<SpriteFont>("Consolas");
+        numTextures[0] = Content.Load<Texture2D>("0");
+        numTextures[1] = Content.Load<Texture2D>("1");
+        numTextures[2] = Content.Load<Texture2D>("2");
+        numTextures[3] = Content.Load<Texture2D>("3");
+        numTextures[4] = Content.Load<Texture2D>("4");
+        numTextures[5] = Content.Load<Texture2D>("5");
+        numTextures[6] = Content.Load<Texture2D>("6");
+        numTextures[7] = Content.Load<Texture2D>("7");
+        numTextures[8] = Content.Load<Texture2D>("8");
+        numTextures[9] = Content.Load<Texture2D>("9");
+        
     }
 
     protected override void Update(GameTime gameTime)
@@ -72,6 +84,7 @@ public class Game1 : Game
 
         spriteBatch.Begin();
 //----------------------------------------------------------
+        DisplayScore();
         spriteBatch.Draw(ground, new Rectangle(0, Height - 100, Width, 100), Color.White);
         foreach (Pole pp in Paules) {
             pp.Draw(spriteBatch);
@@ -82,5 +95,21 @@ public class Game1 : Game
         spriteBatch.End();
 
         base.Draw(gameTime);
+    }
+
+    private void DisplayScore() 
+    {
+        string ss = score.ToString();
+        int st = 20;
+        int between = 1;
+        int difference = 0;
+
+        foreach (char s in ss) {
+            int index = Convert.ToInt32(s.ToString());
+            Texture2D textore = numTextures[index];
+            spriteBatch.Draw(textore, new Vector2(st + difference, 20), Color.White);
+            difference += between + textore.Width;
+        }
+
     }
 }
