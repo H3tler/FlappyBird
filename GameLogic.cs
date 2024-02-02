@@ -26,7 +26,7 @@ public static class GameLogic
             if (paul.InPos(spawnx)) {
                 var po = new Pole(pipeG);
                 polls.Add(po);      
-                if (spawnx < minspawnx) spawnx += 10f;     
+                UpdateSpawnRate();   
             }
             if (paul.CheckPass(Player.Xmin))
                 score++;
@@ -36,6 +36,12 @@ public static class GameLogic
         }
 
         Paules = polls;
+    }
+
+    static void UpdateSpawnRate()
+    {
+        if (spawnx < minspawnx) 
+            spawnx += 10f; 
     }
 
     static void Collisions()

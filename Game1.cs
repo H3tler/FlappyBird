@@ -36,8 +36,7 @@ public class Game1 : Game
         LoadHighScore();
         start = new(startbutton, new Vector2(Width / 2, 200), StartGame);
         quit = new(quitbutton, new Vector2(Width / 2, 320), Exit);
-        
-        
+            
 //----------------------------------------------------------
 
         base.Initialize();
@@ -47,10 +46,6 @@ public class Game1 : Game
 
     void LoadTheContent() 
     {
-        pixel1 = new (GraphicsDevice, 1, 1);
-        pixel1.SetData(new Color[] {Color.Blue});
-        pixel2 = new (GraphicsDevice, 1, 1);
-        pixel2.SetData(new Color[] {Color.Green});
         pipeG = Content.Load<Texture2D>("pipeG");
         ground = Content.Load<Texture2D>("base");
         bbm = Content.Load<Texture2D>("bbm");
@@ -58,16 +53,9 @@ public class Game1 : Game
         bbd = Content.Load<Texture2D>("bbd");
         startbutton = Content.Load<Texture2D>("start");
         quitbutton = Content.Load<Texture2D>("quit");
-        numTextures[0] = Content.Load<Texture2D>("0");
-        numTextures[1] = Content.Load<Texture2D>("1");
-        numTextures[2] = Content.Load<Texture2D>("2");
-        numTextures[3] = Content.Load<Texture2D>("3");
-        numTextures[4] = Content.Load<Texture2D>("4");
-        numTextures[5] = Content.Load<Texture2D>("5");
-        numTextures[6] = Content.Load<Texture2D>("6");
-        numTextures[7] = Content.Load<Texture2D>("7");
-        numTextures[8] = Content.Load<Texture2D>("8");
-        numTextures[9] = Content.Load<Texture2D>("9");
+        for (int i = 0; i < 10; i++) {
+            numTextures[i] = Content.Load<Texture2D>($"{i}");
+        }
         Consolas = Content.Load<SpriteFont>("Consolas");
         
     }
@@ -108,7 +96,6 @@ public class Game1 : Game
         else {
             start.Draw(spriteBatch);
             quit.Draw(spriteBatch);
-            Vector2 wid = Consolas.MeasureString("High Score :");
             spriteBatch.DrawString(Consolas, "High Score :", new Vector2(5, 20),
             Color.Black, 0f, new Vector2(0, 0),
             1f, SpriteEffects.None, 0f);

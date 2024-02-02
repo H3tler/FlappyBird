@@ -12,9 +12,6 @@ public static class Globals // Class for global methods and variables.
     public static Bird Player;
     public static List<Pole> Paules;
     public static bool GameOver = true;
-    public static int polewidth = 100;
-    public static Texture2D pixel1;
-    public static Texture2D pixel2;
     public static Texture2D ground;
     public static Texture2D pipeG;
     public static Texture2D bbu, bbm, bbd;

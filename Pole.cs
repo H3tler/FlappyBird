@@ -38,7 +38,7 @@ public class Pole
     public Pole(Texture2D Texture) 
     {
         Random ran = new Random();
-        int width = polewidth;
+        int width = Texture.Width;
         
         int height1 = ran.Next(100, MaxHeight - 100);
         int height2 = ran.Next(100, MaxHeight - height1);
