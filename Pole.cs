@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System;
 
 namespace FlappyBird;
@@ -87,7 +86,7 @@ public class Pole
     public bool OffPos(float x) 
     {
         foreach (Paul pole in poles) {
-            if (pole.Position.X + (pole.Width / 2) < x) return true;
+            if (pole.Xmax < x) return true;
         }
 
         return false;
@@ -108,7 +107,7 @@ public class Pole
     public bool CheckPass(float x)
     {
         foreach (Paul pole in poles) {
-            if (pole.Position.X + (pole.Width / 2) < x && birdin == false) {
+            if (pole.Xmax < x && birdin == false) {
                 birdin = true;
                 return true;
             }

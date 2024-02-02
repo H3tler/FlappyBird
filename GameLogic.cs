@@ -28,7 +28,7 @@ public static class GameLogic
                 polls.Add(po);      
                 if (spawnx < minspawnx) spawnx += 10f;     
             }
-            if (paul.CheckPass(Player.Position.X - (Player.Width / 2)))
+            if (paul.CheckPass(Player.Xmin))
                 score++;
 
             paul.Move(new Vector2(GameSpeed, 0));
@@ -46,7 +46,9 @@ public static class GameLogic
             }
         }
 
-        if (Player.Position.Y - (Player.Height / 2) > Height) EndGame();
+        if (Player.Ymin < 0) Player.Move(new Vector2(0, MathF.Abs(Player.Ymin)));
+
+        if (Player.Ymin > Height) EndGame();
     }
 
     static async void PlayBirdAnimation() 
