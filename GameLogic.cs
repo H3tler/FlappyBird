@@ -9,8 +9,8 @@ public static class GameLogic
 
     static bool keypressed;
     static float charge;
-    static float minspawnx = Width - pipeG.Width - 10;
-    static float spawnx = Width / 2;
+    static float minspawnx;
+    static float spawnx;
     public static int score;
     static bool hitwall;
 
@@ -72,6 +72,8 @@ public static class GameLogic
         GameOver = false;
         hitwall = false;
         keypressed = false;
+        spawnx = Width / 2;
+        minspawnx = Width - pipeG.Width - 10;
         charge = -1.5f;
     }
 
