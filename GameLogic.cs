@@ -12,6 +12,7 @@ public static class GameLogic
     static float minspawnx = Width - pipeG.Width - 10;
     static float spawnx = Width / 2;
     public static int score;
+    static bool hitwall;
 
     public static void ProgressGame()
     {
@@ -39,7 +40,9 @@ public static class GameLogic
     public static void Collisions()
     {
         foreach (Pole paul in Paules) {
-            if (paul.CheckCollision(Player)) GameOver = true;
+            if (paul.CheckCollision(Player)) {
+                hitwall = true;
+            }
         }
 
         if (Player.Position.Y - (Player.Height / 2) > Height) GameOver = true;
@@ -67,6 +70,7 @@ public static class GameLogic
         MaxHeight = Height - (Player.Height + 30);
         Paules.Add(new Pole(pipeG));
         GameOver = false;
+        hitwall = false;
         keypressed = false;
         charge = -1.5f;
     }
@@ -74,13 +78,14 @@ public static class GameLogic
     public static void UpdateGameState()
     {
         
-        HandleKeys();
+        if (! hitwall) HandleKeys();
 
         gravity += 0.1f;
 
         Player.Move(new Vector2(0, gravity));
 
-        if (GameOver) {
+        if (hitwall) {
+            GameSpeed = 0;
             rotationangle = 75;
         } 
         

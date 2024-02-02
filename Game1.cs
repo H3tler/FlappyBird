@@ -11,6 +11,7 @@ public class Game1 : Game
 {
     private GraphicsDeviceManager graphics;
     private SpriteBatch spriteBatch;
+    Button start, quit;
 
     public Game1()
     {
@@ -32,7 +33,9 @@ public class Game1 : Game
 //----------------------------------------------------------
         
         LoadTheContent();
-        StartGame();
+
+        start = new(startbutton, new Vector2(Width / 2, 200), StartGame);
+        quit = new(quitbutton, new Vector2(Width / 2, 320), Exit);
         
 //----------------------------------------------------------
 
@@ -52,7 +55,8 @@ public class Game1 : Game
         bbm = Content.Load<Texture2D>("bbm");
         bbu = Content.Load<Texture2D>("bbu");
         bbd = Content.Load<Texture2D>("bbd");
-        Consolas = Content.Load<SpriteFont>("Consolas");
+        startbutton = Content.Load<Texture2D>("start");
+        quitbutton = Content.Load<Texture2D>("quit");
         numTextures[0] = Content.Load<Texture2D>("0");
         numTextures[1] = Content.Load<Texture2D>("1");
         numTextures[2] = Content.Load<Texture2D>("2");
@@ -63,6 +67,7 @@ public class Game1 : Game
         numTextures[7] = Content.Load<Texture2D>("7");
         numTextures[8] = Content.Load<Texture2D>("8");
         numTextures[9] = Content.Load<Texture2D>("9");
+        Consolas = Content.Load<SpriteFont>("Consolas");
         
     }
 
@@ -72,7 +77,13 @@ public class Game1 : Game
             Exit();
 
 //----------------------------------------------------------
-        UpdateGameState();
+        if (GameOver) {
+            start.Update();
+            quit.Update();
+        }
+        else {
+            UpdateGameState();
+        }
 //----------------------------------------------------------
 
         base.Update(gameTime);
@@ -83,14 +94,21 @@ public class Game1 : Game
         GraphicsDevice.Clear(Color.CornflowerBlue);
 
         spriteBatch.Begin();
-//----------------------------------------------------------
-        DisplayScore();
+//----------------------------------------------------------     
         spriteBatch.Draw(ground, new Rectangle(0, Height - 100, Width, 100), Color.White);
-        foreach (Pole pp in Paules) {
-            pp.Draw(spriteBatch);
+
+        if (! GameOver) {
+            foreach (Pole pp in Paules) {
+                pp.Draw(spriteBatch);
+            }
+            Player.Draw(spriteBatch, gravity);    
+            DisplayScore();  
         }
-        Player.Draw(spriteBatch, gravity);      
-        //spriteBatch.DrawString(Consolas, charge.ToString(), new Vector2(300, 300), Color.Black);      
+        else {
+            start.Draw(spriteBatch);
+            quit.Draw(spriteBatch);
+        }
+           
 //----------------------------------------------------------
         spriteBatch.End();
 
