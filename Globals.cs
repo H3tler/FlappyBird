@@ -22,5 +22,7 @@ public static class Globals // Class for global methods and variables.
     public static Texture2D[] numTextures = new Texture2D[10];
     public static float rotationangle;
     public static SpriteFont Consolas;
+    public static int HighScore;
+    public static string HSfileName = "Flappy_Bird_High_Score.txt";
 }
 

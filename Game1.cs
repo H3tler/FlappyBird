@@ -33,9 +33,10 @@ public class Game1 : Game
 //----------------------------------------------------------
         
         LoadTheContent();
-
+        LoadHighScore();
         start = new(startbutton, new Vector2(Width / 2, 200), StartGame);
         quit = new(quitbutton, new Vector2(Width / 2, 320), Exit);
+        
         
 //----------------------------------------------------------
 
@@ -102,11 +103,16 @@ public class Game1 : Game
                 pp.Draw(spriteBatch);
             }
             Player.Draw(spriteBatch, gravity);    
-            DisplayScore();  
+            DisplayNum(score, new Vector2(20, 20));  
         }
         else {
             start.Draw(spriteBatch);
             quit.Draw(spriteBatch);
+            Vector2 wid = Consolas.MeasureString("High Score :");
+            spriteBatch.DrawString(Consolas, "High Score :", new Vector2(5, 20),
+            Color.Black, 0f, new Vector2(0, 0),
+            1f, SpriteEffects.None, 0f);
+            DisplayNum(HighScore, new Vector2(5, 60));
         }
            
 //----------------------------------------------------------
@@ -115,17 +121,16 @@ public class Game1 : Game
         base.Draw(gameTime);
     }
 
-    private void DisplayScore() 
+    private void DisplayNum(int num, Vector2 pos) 
     {
-        string ss = score.ToString();
-        int st = 20;
+        string ss = num.ToString();
         int between = 1;
         int difference = 0;
 
         foreach (char s in ss) {
             int index = Convert.ToInt32(s.ToString());
             Texture2D textore = numTextures[index];
-            spriteBatch.Draw(textore, new Vector2(st + difference, 20), Color.White);
+            spriteBatch.Draw(textore, new Vector2(pos.X + difference, pos.Y), Color.White);
             difference += between + textore.Width;
         }
 

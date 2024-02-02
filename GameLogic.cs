@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -14,7 +15,7 @@ public static class GameLogic
     public static int score;
     static bool hitwall;
 
-    public static void ProgressGame()
+    static void ProgressGame()
     {
         List<Pole> polls = new();
 
@@ -37,7 +38,7 @@ public static class GameLogic
         Paules = polls;
     }
 
-    public static void Collisions()
+    static void Collisions()
     {
         foreach (Pole paul in Paules) {
             if (paul.CheckCollision(Player)) {
@@ -45,10 +46,10 @@ public static class GameLogic
             }
         }
 
-        if (Player.Position.Y - (Player.Height / 2) > Height) GameOver = true;
+        if (Player.Position.Y - (Player.Height / 2) > Height) EndGame();
     }
 
-    public static async void PlayBirdAnimation() 
+    static async void PlayBirdAnimation() 
     {
         Player.Texture = bbu;
         await Task.Delay(50);
@@ -57,6 +58,15 @@ public static class GameLogic
         Player.Texture = bbd;
         await Task.Delay(50);
         Player.Texture = bbm;
+    }
+
+    static void EndGame()
+    {
+        if (score > HighScore) {
+            HighScore = score;
+            SaveHighScore();
+        }
+        GameOver = true;
     }
 
     public static void StartGame()
@@ -96,7 +106,7 @@ public static class GameLogic
         Collisions();
     }
 
-    public static void HandleKeys()
+    static void HandleKeys()
     {
         var ks = Keyboard.GetState();
 
@@ -116,8 +126,28 @@ public static class GameLogic
             }                
         }    
 
-        if (ks.IsKeyDown(Keys.Q)) 
-            StartGame(); 
+    }
+
+    static void SaveHighScore()
+    {    
+        string dir = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+        string path = Path.Combine(dir, HSfileName);
+
+        File.WriteAllText(path, HighScore.ToString());
+    }
+
+    public static void LoadHighScore()
+    {
+        string dir = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+        string path = Path.Combine(dir, HSfileName);
+        
+        if (! File.Exists(path)) {
+            HighScore = 0;
+            return;
+        }
+
+        HighScore = Convert.ToInt32(File.ReadAllText(path));
+
     }
 
 }
