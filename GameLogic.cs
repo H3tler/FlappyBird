@@ -59,7 +59,7 @@ public static class GameLogic
     public static void StartGame()
     {
         Paules = new();
-        score = 10;
+        score = 0;
         rotationangle = 10;  
         gravity = 0;                 
         GameSpeed = -2;
