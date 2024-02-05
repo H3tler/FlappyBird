@@ -8,12 +8,14 @@ namespace FlappyBird;
 public static class GameLogic
 {
 
-    static bool keypressed;
+    static bool keypressed, pausedPressed;
     static float charge;
     static float minspawnx;
     static float spawnx;
     public static int score;
     static bool hitwall;
+    static Random ran;
+    static bool Paused;
 
     static void ProgressGame()
     {
@@ -28,8 +30,10 @@ public static class GameLogic
                 polls.Add(po);      
                 UpdateSpawnRate();   
             }
-            if (paul.CheckPass(Player.Xmin))
+            if (paul.CheckPass(Player.Xmin)) {
                 score++;
+                if (ran.Next(0, 2) == 1 && GameSpeed > -4f) GameSpeed += -0.1f;             
+            }         
 
             paul.Move(new Vector2(GameSpeed, 0));
             polls.Add(paul);
@@ -80,6 +84,7 @@ public static class GameLogic
     public static void StartGame()
     {
         Paules = new();
+        ran = new();
         score = 0;
         rotationangle = 10;  
         gravity = 0;                 
@@ -90,6 +95,8 @@ public static class GameLogic
         GameOver = false;
         hitwall = false;
         keypressed = false;
+        pausedPressed = false;
+        Paused = false;
         spawnx = Width / 2;
         minspawnx = Width - pipeG.Width - 10;
         charge = -1.5f;
@@ -97,20 +104,22 @@ public static class GameLogic
 
     public static void UpdateGameState()
     {
+         
+        HandleKeys();
+
+        if (GameOver == true || Paused == true) 
+            return;        
+         
+        gravity += 0.1f;  
+
+        Player.Move(new Vector2(0, gravity));  
         
-        if (! hitwall) HandleKeys();
-
-        gravity += 0.1f;
-
-        Player.Move(new Vector2(0, gravity));
-
         if (hitwall) {
             GameSpeed = 0;
             rotationangle = 75;
-        } 
-        
-        if (! GameOver) ProgressGame();
+        }
 
+        ProgressGame();
         Collisions();
     }
 
@@ -127,18 +136,26 @@ public static class GameLogic
 
         if (ks.IsKeyUp(Keys.Space) && keypressed == true) {
             keypressed = false;
-            if (! GameOver) {
+            if (GameOver == false && hitwall == false && Paused == false) {
                 gravity = charge;
                 charge = -1.5f;
                 PlayBirdAnimation();
             }                
-        }    
+        } 
 
+        if (ks.IsKeyDown(Keys.Escape)) {
+            pausedPressed = true;
+        }   
+        
+        if (ks.IsKeyUp(Keys.Escape) && pausedPressed == true) {
+            Paused = !Paused;
+            pausedPressed = false;
+        }
     }
 
     static void SaveHighScore()
     {    
-        string dir = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+        string dir = Directory.GetCurrentDirectory();
         string path = Path.Combine(dir, HSfileName);
 
         File.WriteAllText(path, HighScore.ToString());
@@ -146,7 +163,7 @@ public static class GameLogic
 
     public static void LoadHighScore()
     {
-        string dir = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+        string dir = Directory.GetCurrentDirectory();
         string path = Path.Combine(dir, HSfileName);
         
         if (! File.Exists(path)) {
