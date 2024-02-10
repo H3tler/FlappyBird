@@ -76,9 +76,9 @@ public class Pole
     public void Draw(SpriteBatch spriteBatch)
     {
         foreach (Paul pole in poles) {
-            float rot = pole == poles[1] ? 0f : MathF.PI;
-            spriteBatch.Draw(Texture, pole.Position, new Rectangle {Width = pole.Width, Height = pole.Height}, Color.White, rot,
-                new Vector2(pole.Width / 2, pole.Height / 2), Vector2.One, SpriteEffects.None, 0f);
+            SpriteEffects effect = pole == poles[1] ? SpriteEffects.None : SpriteEffects.FlipVertically;
+            spriteBatch.Draw(Texture, pole.Position, new Rectangle {Width = pole.Width, Height = pole.Height}, Color.White, 0f,
+                new Vector2(pole.Width / 2, pole.Height / 2), Vector2.One, effect, 0f);
         }
         
     }

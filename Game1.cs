@@ -19,8 +19,6 @@ public class Game1 : Game
         Content.RootDirectory = "Content";
         IsMouseVisible = true;
 
-        // TargetElapsedTime = new System.TimeSpan(Time you want); If you want to change the framerate.
-
         // Set the window size:
         graphics.PreferredBackBufferWidth = Width = 800;
         graphics.PreferredBackBufferHeight = Height = 500;
@@ -28,6 +26,7 @@ public class Game1 : Game
 
     protected override void Initialize()
     {
+        base.Initialize();
         spriteBatch = new SpriteBatch(GraphicsDevice);
 
 //----------------------------------------------------------
@@ -37,9 +36,7 @@ public class Game1 : Game
         start = new(startbutton, new Vector2(Width / 2, 200), StartGame);
         quit = new(quitbutton, new Vector2(Width / 2, 320), Exit);
             
-//----------------------------------------------------------
-
-        base.Initialize();
+//----------------------------------------------------------    
     }
 
     protected override void LoadContent() {}
@@ -83,7 +80,7 @@ public class Game1 : Game
         GraphicsDevice.Clear(Color.CornflowerBlue);
 
         spriteBatch.Begin();
-//----------------------------------------------------------     
+
         spriteBatch.Draw(ground, new Rectangle(0, Height - 100, Width, 100), Color.White);
 
         if (! GameOver) {
@@ -101,10 +98,9 @@ public class Game1 : Game
             1f, SpriteEffects.None, 0f);
             DisplayNum(HighScore, new Vector2(5, 60));
         }
-           
-//----------------------------------------------------------
-        spriteBatch.End();
 
+        spriteBatch.End();
+        
         base.Draw(gameTime);
     }
 
